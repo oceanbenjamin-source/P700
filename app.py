@@ -14,7 +14,7 @@ def load_data():
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
     
     # 根據檔案結構：header=1 代表 Excel 的第 2 列是標題欄位列
-    df = pd.read_excel(excel_path, header=1, dtype=str)
+    df = pd.read_excel(excel_path, header=2, dtype=str)
     
     # 清理欄位名稱前後空白
     df.columns = [str(col).strip() for col in df.columns]
