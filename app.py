@@ -54,10 +54,10 @@ if code_input:
         
         # 逐筆顯示結果
         for idx, row in result.iterrows():
-            st.metric(label="名稱", value=row.get("名稱", "無紀錄"))
+            st.metric(label=" 名稱", value=row.get("名稱", "無紀錄"))
             st.metric(label="🪑 位置", value=row.get("位置", "無紀錄"))
             
             with st.expander("檢視完整詳細資料"):
                 st.dataframe(result)
     else:
-        st.error(f"❌ 查無此編號 (`{target_id}`) 的位置訊息，請確認資料庫內容。")
+        st.error(f"❌ 查無此編號 (`{target_id}`)，請確認資料庫內容。")
