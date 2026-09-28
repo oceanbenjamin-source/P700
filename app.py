@@ -47,7 +47,7 @@ if code_input:
     
     # 於 Excel 中比對
     result = df[df["編號"] == target_id]
-    
+
     if not result.empty:
         st.balloons()
         st.success("✅ 找到對應資料！")
