@@ -49,10 +49,10 @@ if code_input:
     result = df[df["編號"] == target_id]
     
     if not result.empty:
-    	st.balloons()
-    	st.success("✅ 找到對應資料！")
+        st.balloons()
+        st.success("✅ 找到對應資料！")
 
-    	for idx, row in result.iterrows():
+        for idx, row in result.iterrows():
         # 自動把 Excel 裡除了「編號」以外的每個欄位都用漂亮的卡片顯示出來
         for col in df.columns:
     if col != "編號":
