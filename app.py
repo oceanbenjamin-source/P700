@@ -46,7 +46,7 @@ if code_input:
     st.write(f"🔍 擷取比對編號：**`{target_id}`**")
     
     # 於 Excel 中比對
-    result = df[df["編號"] == target_id]
+    result = df[df["pno"] == target_id]
     
     if not result.empty:
         st.balloons()
