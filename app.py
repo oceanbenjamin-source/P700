@@ -56,9 +56,9 @@ if code_input:
         # 自動把 Excel 裡除了「編號」以外的每個欄位都用漂亮的卡片顯示出來
         	for col in df.columns:
 	if col != "編號":
-               	 st.metric(label=f"📌 {col}", value=row[col] if pd.notna(row[col]) else "無紀錄")
+	st.metric(label=f"📌 {col}", value=row[col] if pd.notna(row[col]) else "無紀錄")
 
-        	with st.expander("檢視完整詳細資料"):
-            	st.dataframe(result)
+	with st.expander("檢視完整詳細資料"):
+	st.dataframe(result)
     else:
         st.error(f"❌ 查無此編號 (`{target_id}`)，請確認資料庫內容。")
