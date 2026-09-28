@@ -6,12 +6,17 @@ st.set_page_config(page_title="手機件號查詢系統", layout="centered")
 
 st.title("📱 件號快速查詢系統")
 
+import os
+
 # 1. 載入 Excel 資料庫
 @st.cache_data
 def load_data():
-    # 讀取 data.xlsx，強制將「編號」轉為文字格式，避免開頭 0 遺失
-    df = pd.read_excel("data.xlsx", dtype={"編號": str})
-    # 清理號碼前後可能的空格
+    # 取得 app.py 所在的資料夾路徑
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    excel_path = os.path.join(BASE_DIR, "data.xlsx")
+    
+    # 讀取 Excel 檔案
+    df = pd.read_excel(excel_path, dtype={"編號": str})
     df["編號"] = df["編號"].str.strip()
     return df
 
@@ -61,17 +66,5 @@ if code_input:
     else:
         st.error(f"❌ 查無此編號 (`{target_id}`) 的件號訊息，請確認資料庫內容。")
 
-import pathlib
-import pandas as pd
-import streamlit as st
 
-# 取得目前 app.py 所在資料夾的絕對路徑
-current_dir = pathlib.Path(__file__).parent
-excel_path = current_dir / "data.xlsx"
-
-
-@st.cache_data
-def load_data():
-  df = pd.read_excel(excel_path, dtype={"編號": str})
-  df["編號"] = df["編號"].str.strip()
   return df
