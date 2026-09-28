@@ -3,17 +3,26 @@ import streamlit as st
 import pandas as pd
 from streamlit_qrcode_scanner import qrcode_scanner
 
-st.set_page_config(page_title="手機座位查詢系統", layout="centered")
+st.set_page_config(page_title="手機座位與站別查詢系統", layout="centered")
 
-st.title("📱 查詢系統")
+st.title("📱 站別與料號快速查詢系統")
 
 # 1. 載入 Excel 資料庫
 @st.cache_data
 def load_data():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
-    df = pd.read_excel(excel_path, dtype={"pno": str})
-    df["pno"] = df["pno"].str.strip()
+    
+    # 根據檔案結構：header=1 代表 Excel 的第 2 列是標題欄位列
+    df = pd.read_excel(excel_path, header=1, dtype=str)
+    
+    # 清理欄位名稱前後空白
+    df.columns = [str(col).strip() for col in df.columns]
+    
+    # 確保 PNO 欄位存在且去除字串前後空格
+    if "PNO" in df.columns:
+        df["PNO"] = df["PNO"].astype(str).str.strip()
+    
     return df
 
 try:
@@ -43,26 +52,32 @@ else:
 if code_input:
     # 擷取字串前 10 碼
     target_id = code_input[:10].strip()
-    st.write(f"🔍 擷取比對編號：**`{target_id}`**")
+    st.write(f"🔍 擷取比對編號 (PNO)：**`{target_id}`**")
     
-    # 於 Excel 中比對
-    result = df[df["pno"] == target_id]
-    
-    if not result.empty:
-        st.balloons()
-        st.success("✅ 找到對應座位資料！")
+    # 於 Excel 的 PNO 欄位中比對
+    if "PNO" in df.columns:
+        result = df[df["PNO"] == target_id]
         
-        # 逐筆顯示結果
-        for idx, row in result.iterrows():
-            # 自動判斷欄位是叫 "名稱" 還是 "pnm"
-            name_val = row.get("名稱") if "名稱" in row else row.get("姓名", "無紀錄")
-            seat_val = row.get("座位", "無紀錄")
+        if not result.empty:
+            st.balloons()
+            st.success("✅ 找到對應資料！")
             
-            st.metric(label="👤 pnm", value=name_val)
-            st.metric(label="🪑 位置", value=seat_val)
-            
-            with st.expander("檢視完整詳細資料"):
-                st.dataframe(result)
+            # 逐筆顯示指定的三個欄位資訊
+            for idx, row in result.iterrows():
+                pno_val = row.get("PNO", "無紀錄")
+                pnm_val = row.get("PNM", "無紀錄")
+                station_val = row.get("站別", "無紀錄")
+                
+                # 顯示要求的三個欄位卡片
+                st.metric(label="🔢 PNO (料號/編號)", value=str(pno_val) if pd.notna(pno_val) else "無紀錄")
+                st.metric(label="📦 PNM (品名/名稱)", value=str(pnm_val) if pd.notna(pnm_val) else "無紀錄")
+                st.metric(label="📍 站別", value=str(station_val) if pd.notna(station_val) else "無紀錄")
+                
+                # 下方詳細資料表也僅保留這三個欄位
+                with st.expander("檢視這三個欄位的簡明表格"):
+                    target_cols = [c for c in ["PNO", "PNM", "站別"] if c in result.columns]
+                    st.dataframe(result[target_cols])
+        else:
+            st.error(f"❌ 查無此 PNO 編號 (`{target_id}`) 的資料，請確認資料庫內容。")
     else:
-        st.error(f"❌ 查無此編號 (`{target_id}`)，請確認資料庫內容。")
-  
+        st.error("❌ Excel 檔案中找不到『PNO』欄位，請確認標題列位置。")
