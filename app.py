@@ -54,7 +54,7 @@ if code_input:
         
         # 逐筆顯示結果
         for idx, row in result.iterrows():
-            st.metric(label="👤 姓名", value=row.get("姓名", "無紀錄"))
+            st.metric(label="👤 名稱", value=row.get("名稱", "無紀錄"))
             st.metric(label="🪑 座位號碼", value=row.get("座位", "無紀錄"))
             
             with st.expander("檢視完整詳細資料"):
