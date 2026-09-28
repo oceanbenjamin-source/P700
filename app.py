@@ -58,12 +58,12 @@ if code_input:
             name_val = row.get("名稱") if "名稱" in row else row.get("姓名", "無紀錄")
             seat_val = row.get("座位", "無紀錄")
             
-            st.metric(label="👤 名稱/姓名", value=name_val)
-            st.metric(label="🪑 座位號碼", value=seat_val)
+            st.metric(label="👤 名稱", value=name_val)
+            st.metric(label="🪑 位置", value=seat_val)
             
             with st.expander("檢視完整詳細資料"):
                 st.dataframe(result)
     else:
-        st.error(f"❌ 查無此編號 (`{target_id}`) 的座位訊息，請確認資料庫內容。")
-elif search_query:
+        st.error(f"❌ 查無此編號 (`{target_id}`)，請確認資料庫內容。")
+    elif search_query:
     st.warning("查無資料，請確認輸入的編號是否正確。")
