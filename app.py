@@ -60,3 +60,18 @@ if code_input:
                 st.dataframe(result)
     else:
         st.error(f"❌ 查無此編號 (`{target_id}`) 的件號訊息，請確認資料庫內容。")
+
+import pathlib
+import pandas as pd
+import streamlit as st
+
+# 取得目前 app.py 所在資料夾的絕對路徑
+current_dir = pathlib.Path(__file__).parent
+excel_path = current_dir / "data.xlsx"
+
+
+@st.cache_data
+def load_data():
+  df = pd.read_excel(excel_path, dtype={"編號": str})
+  df["編號"] = df["編號"].str.strip()
+  return df
