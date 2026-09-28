@@ -5,7 +5,7 @@ from streamlit_qrcode_scanner import qrcode_scanner
 
 st.set_page_config(page_title="P700 VR 料號與站別查詢系統", layout="centered")
 
-st.title("📱 P700 FVR 查詢")
+st.title("📱P700 FVR 查詢")
 
 # 1. 載入 Excel 資料庫
 @st.cache_data
