@@ -49,19 +49,17 @@ if code_input:
     result = df[df["編號"] == target_id]
 search_query = st.text_input("請輸入編號")
 
-# 1. 先初始化 result 為 None
-result = None
-
-# 2. 當有輸入內容時才進行查詢
-if search_query:
-    result = df[df["編號"] == search_query.strip()]
-
-# 3. 進行判斷與顯示
-if result is not None and not result.empty:
+if not result.empty:
     st.balloons()
-    for col in df.columns:
-        if col != "編號":
-            val = result.iloc[0][col]
-            st.metric(label=col, value=str(val))
+    st.success("✅ 找到對應座位資料！")
+
+    for idx, row in result.iterrows():
+        # 自動把 Excel 裡除了「編號」以外的每個欄位都用漂亮的卡片顯示出來
+        for col in df.columns:
+            if col != "編號":
+                st.metric(label=f"📌 {col}", value=row[col] if pd.notna(row[col]) else "無紀錄")
+
+        with st.expander("檢視完整詳細資料"):
+            st.dataframe(result)
 elif search_query:
     st.warning("查無資料，請確認輸入的編號是否正確。")
