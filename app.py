@@ -1,21 +1,17 @@
+import os
 import streamlit as st
 import pandas as pd
 from streamlit_qrcode_scanner import qrcode_scanner
 
-st.set_page_config(page_title="手機件號查詢系統", layout="centered")
+st.set_page_config(page_title="手機座位查詢系統", layout="centered")
 
-st.title("📱 件號快速查詢系統")
-
-import os
+st.title("📱 座位快速查詢系統")
 
 # 1. 載入 Excel 資料庫
 @st.cache_data
 def load_data():
-    # 取得 app.py 所在的資料夾路徑
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
-    
-    # 讀取 Excel 檔案
     df = pd.read_excel(excel_path, dtype={"編號": str})
     df["編號"] = df["編號"].str.strip()
     return df
