@@ -5,7 +5,7 @@ from streamlit_qrcode_scanner import qrcode_scanner
 
 st.set_page_config(page_title="P700 VR 料號與站別查詢系統", layout="centered")
 
-st.title("📱P700 VR 站別與料號查詢")
+st.title("📱 P700 FVR 查詢")
 
 # 1. 載入 Excel 資料庫
 @st.cache_data
@@ -35,7 +35,7 @@ except Exception as e:
 st.markdown("---")
 
 # 2. 選擇查詢方式
-option = st.radio("選擇查詢方式：", ("鏡頭掃描 QR Code", "手動輸入訊息"))
+option = st.radio("選擇查詢方式：", ("鏡頭掃描 QR Code", "手動輸入件號"))
 
 code_input = ""
 
