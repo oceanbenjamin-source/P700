@@ -3,9 +3,9 @@ import streamlit as st
 import pandas as pd
 from streamlit_qrcode_scanner import qrcode_scanner
 
-st.set_page_config(page_title="手機座位與站別查詢系統", layout="centered")
+st.set_page_config(page_title="P700 VR 料號與站別查詢系統", layout="centered")
 
-st.title("📱 站別與料號快速查詢系統")
+st.title("📱站別與料號查詢")
 
 # 1. 載入 Excel 資料庫
 @st.cache_data
@@ -46,7 +46,7 @@ if option == "鏡頭掃描 QR Code":
         code_input = qr_code
         st.info(f"掃描到的原始訊息：`{code_input}`")
 else:
-    code_input = st.text_input("請貼上或輸入掃描到的訊息：", placeholder="例如：7552379030Z3024AP 030H")
+    code_input = st.text_input("請貼上或輸入掃描到的件號：", placeholder="例如：7552379030Z3024AP 030H")
 
 # 3. 擷取前 10 碼與比對
 if code_input:
