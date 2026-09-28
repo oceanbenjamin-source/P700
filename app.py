@@ -65,5 +65,4 @@ if code_input:
                 st.dataframe(result)
     else:
         st.error(f"❌ 查無此編號 (`{target_id}`)，請確認資料庫內容。")
-    elif search_query:
-    st.warning("查無資料，請確認輸入的編號是否正確。")
+  
