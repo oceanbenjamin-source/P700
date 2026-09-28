@@ -12,8 +12,8 @@ st.title("📱 查詢系統")
 def load_data():
     BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     excel_path = os.path.join(BASE_DIR, "data.xlsx")
-    df = pd.read_excel(excel_path, dtype={"編號": str})
-    df["編號"] = df["編號"].str.strip()
+    df = pd.read_excel(excel_path, dtype={"pno": str})
+    df["pno"] = df["pno"].str.strip()
     return df
 
 try:
