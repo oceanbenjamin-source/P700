@@ -47,19 +47,23 @@ if code_input:
     
     # 於 Excel 中比對
     result = df[df["編號"] == target_id]
-search_query = st.text_input("請輸入編號")
-
-if not result.empty:
-    st.balloons()
-    st.success("✅ 找到對應座位資料！")
-
-    for idx, row in result.iterrows():
-        # 自動把 Excel 裡除了「編號」以外的每個欄位都用漂亮的卡片顯示出來
-        for col in df.columns:
-            if col != "編號":
-                st.metric(label=f"📌 {col}", value=row[col] if pd.notna(row[col]) else "無紀錄")
-
-        with st.expander("檢視完整詳細資料"):
-            st.dataframe(result)
+    
+    if not result.empty:
+        st.balloons()
+        st.success("✅ 找到對應座位資料！")
+        
+        # 逐筆顯示結果
+        for idx, row in result.iterrows():
+            # 自動判斷欄位是叫 "名稱" 還是 "姓名"
+            name_val = row.get("名稱") if "名稱" in row else row.get("姓名", "無紀錄")
+            seat_val = row.get("座位", "無紀錄")
+            
+            st.metric(label="👤 名稱/姓名", value=name_val)
+            st.metric(label="🪑 座位號碼", value=seat_val)
+            
+            with st.expander("檢視完整詳細資料"):
+                st.dataframe(result)
+    else:
+        st.error(f"❌ 查無此編號 (`{target_id}`) 的座位訊息，請確認資料庫內容。")
 elif search_query:
     st.warning("查無資料，請確認輸入的編號是否正確。")
