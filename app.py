@@ -20,7 +20,7 @@ try:
     df = load_data()
     st.success("內部資料庫已成功載入！")
 except Exception as e:
-    st.error("無法載入 data.xlsx，請確認檔案是否存在於專案資料夾中。")
+    st.error(f"無法載入 data.xlsx，錯誤訊息：{e}")
     st.stop()
 
 st.markdown("---")
@@ -50,17 +50,14 @@ if code_input:
     
     if not result.empty:
         st.balloons()
-        st.success("✅ 找到對應件號資料！")
+        st.success("✅ 找到對應座位資料！")
         
         # 逐筆顯示結果
         for idx, row in result.iterrows():
-            st.metric(label="👤 名稱", value=row.get("名稱", "無紀錄"))
-            st.metric(label="🪑 件號號碼", value=row.get("件號", "無紀錄"))
+            st.metric(label="👤 姓名", value=row.get("姓名", "無紀錄"))
+            st.metric(label="🪑 座位號碼", value=row.get("座位", "無紀錄"))
             
             with st.expander("檢視完整詳細資料"):
                 st.dataframe(result)
     else:
-        st.error(f"❌ 查無此編號 (`{target_id}`) 的件號訊息，請確認資料庫內容。")
-
-
-  return df
+        st.error(f"❌ 查無此編號 (`{target_id}`) 的座位訊息，請確認資料庫內容。")
